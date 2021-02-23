@@ -11,7 +11,12 @@ namespace Polish_draughts
             
             var boardSize = Console.ReadLine();
             var result = Board.GetInstance(int.Parse(boardSize));
+            var pole = result.GetBoardSize();
+            Console.WriteLine(pole);
             Console.WriteLine($"Your board size: {boardSize} and {result}");
+
+            var whitePawn = new Pawn(false);
+            Console.WriteLine(whitePawn.Sign);
 
         }
     }
