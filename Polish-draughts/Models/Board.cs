@@ -14,7 +14,7 @@ namespace Polish_draughts.Models
         private Board(int size)
         {
             this._size = size;
-            Fields = new Pawn[_size, _size];
+            Fields = new Pawn[_size, _size]; // Constructing array for pawns, which size depends on size provided by user
         }
 
         public static Board GetInstance(int size)
@@ -28,9 +28,9 @@ namespace Polish_draughts.Models
             return pole;
         }
 
-        public Pawn[,] GetArray(int size)
+        public Pawn[,] GetArray()
         {
-            return null;
+            return Fields; // Returning public array for pawns 
         }
 
     }
