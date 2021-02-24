@@ -49,9 +49,9 @@ namespace Polish_draughts
                     {
                         if (((i % 2 == 0) & (j % 2 == 1)) | ((i % 2 == 1) & (j % 2 == 0)))
                         {
-                            var blackPawn = new Pawn(true);
-                            blackPawn.Coordinates = (i, j);
-                            array[i, j] = blackPawn;
+                            var whitePawn = new Pawn(true);
+                            whitePawn.Coordinates = (i, j);
+                            array[i, j] = whitePawn;
                             amountOfWhitePawns += 1;
                         }
                     }

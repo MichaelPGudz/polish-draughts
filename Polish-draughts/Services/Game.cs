@@ -6,21 +6,21 @@ namespace Polish_draughts.Services
 {
     public class Game
     {
-        public void newPlaceForPawn(string pawnColour, int x, int y, Pawn[,] array)
+        public void newPlaceForPawn(string pawnColour, int x, int y, int newX, int newY, Pawn[,] array)
         {
             array[x, y] = null;
 
             if (pawnColour == "B")
             {
                 var blackPawn = new Pawn(false);
-                blackPawn.Coordinates = (x, y);
-                array[x, y] = blackPawn; 
+                blackPawn.Coordinates = (newX, newY);
+                array[newX, newY] = blackPawn; 
             }
             else if (pawnColour == "W")
             {
                 var whitePawn = new Pawn(true);
-                whitePawn.Coordinates = (x, y);
-                array[x, y] = whitePawn;
+                whitePawn.Coordinates = (newX, newY);
+                array[newX, newY] = whitePawn;
             }
         }
         
@@ -42,19 +42,19 @@ namespace Polish_draughts.Services
             switch (input.Key)
             {
                 case ConsoleKey.D7:
-                    newPlaceForPawn(pawnColour, x - 1, y - 1, array);
+                    newPlaceForPawn(pawnColour, x, y, x - 1, y - 1, array);
                     break;
                 
                 case ConsoleKey.D9:
-                    newPlaceForPawn(pawnColour, x - 1, y + 1, array);
+                    newPlaceForPawn(pawnColour, x, y, x - 1, y + 1, array);
                     break;
                 
                 case ConsoleKey.D1:
-                    newPlaceForPawn(pawnColour, x + 1, y - 1, array);
+                    newPlaceForPawn(pawnColour, x, y, x + 1, y - 1, array);
                     break;
                 
                 case ConsoleKey.D3:
-                    newPlaceForPawn(pawnColour, x + 1, y - 1, array);
+                    newPlaceForPawn(pawnColour, x, y,x + 1, y - 1, array);
                     break;
             }
             return array;
