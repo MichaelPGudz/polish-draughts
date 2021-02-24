@@ -1,5 +1,6 @@
 ﻿using System;
 using Polish_draughts.Models;
+using Polish_draughts.Services;
 
 namespace Polish_draughts
 {
@@ -86,6 +87,10 @@ namespace Polish_draughts
             
             Pawn[,] array = GetBoard();
             SeeBoard(array);
+            var makingMove = new Game();
+            Pawn[,] newArray = makingMove.MakeMove(array);
+            Console.WriteLine();
+            SeeBoard(newArray);
 
         }
     }
