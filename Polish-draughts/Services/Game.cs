@@ -6,6 +6,25 @@ namespace Polish_draughts.Services
 {
     public class Game
     {
+        public void newPlaceForPawn(string pawnColour, int x, int y, Pawn[,] array)
+        {
+            array[x, y] = null;
+
+            if (pawnColour == "B")
+            {
+                var blackPawn = new Pawn(false);
+                blackPawn.Coordinates = (x, y);
+                array[x, y] = blackPawn; 
+            }
+            else if (pawnColour == "W")
+            {
+                var whitePawn = new Pawn(true);
+                whitePawn.Coordinates = (x, y);
+                array[x, y] = whitePawn;
+            }
+        }
+        
+        
         public Pawn[,] MakeMove(Pawn[,] array)
         {   
             Console.WriteLine("Please provide coordinates of Pawn you want to move: eg. 13, or 41");
@@ -23,71 +42,19 @@ namespace Polish_draughts.Services
             switch (input.Key)
             {
                 case ConsoleKey.D7:
-                    array[x, y] = null;
-
-                    if (pawnColour == "B")
-                    {
-                        var blackPawn = new Pawn(false);
-                        blackPawn.Coordinates = (x, y);
-                        array[x - 1, y - 1] = blackPawn; 
-                    }
-                    else if (pawnColour == "W")
-                    {
-                        var whitePawn = new Pawn(true);
-                        whitePawn.Coordinates = (x, y);
-                        array[x - 1, y - 1] = whitePawn;
-                    }
+                    newPlaceForPawn(pawnColour, x - 1, y - 1, array);
                     break;
                 
                 case ConsoleKey.D9:
-                    array[x, y] = null;
-
-                    if (pawnColour == "B")
-                    {
-                        var blackPawn = new Pawn(false);
-                        blackPawn.Coordinates = (x, y);
-                        array[x - 1, y + 1] = blackPawn; 
-                    }
-                    else if (pawnColour == "W")
-                    {
-                        var whitePawn = new Pawn(true);
-                        whitePawn.Coordinates = (x, y);
-                        array[x - 1, y + 1] = whitePawn;
-                    }
+                    newPlaceForPawn(pawnColour, x - 1, y + 1, array);
                     break;
                 
                 case ConsoleKey.D1:
-                    array[x, y] = null;
-
-                    if (pawnColour == "B")
-                    {
-                        var blackPawn = new Pawn(false);
-                        blackPawn.Coordinates = (x, y);
-                        array[x + 1, y - 1] = blackPawn; 
-                    }
-                    else if (pawnColour == "W")
-                    {
-                        var whitePawn = new Pawn(true);
-                        whitePawn.Coordinates = (x, y);
-                        array[x + 1, y - 1] = whitePawn;
-                    }
+                    newPlaceForPawn(pawnColour, x + 1, y - 1, array);
                     break;
                 
                 case ConsoleKey.D3:
-                    array[x, y] = null;
-
-                    if (pawnColour == "B")
-                    {
-                        var blackPawn = new Pawn(false);
-                        blackPawn.Coordinates = (x, y);
-                        array[x + 1, y + 1] = blackPawn; 
-                    }
-                    else if (pawnColour == "W")
-                    {
-                        var whitePawn = new Pawn(true);
-                        whitePawn.Coordinates = (x, y);
-                        array[x + 1, y + 1] = whitePawn;
-                    }
+                    newPlaceForPawn(pawnColour, x + 1, y - 1, array);
                     break;
             }
             return array;
