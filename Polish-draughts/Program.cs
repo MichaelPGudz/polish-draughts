@@ -4,7 +4,7 @@ using Polish_draughts.Models;
 namespace Polish_draughts
 {
     class Program
-    {
+    {   
         static void Main(string[] args)
         {
             Console.WriteLine("Enter Board size: ");
@@ -32,11 +32,9 @@ namespace Polish_draughts
                             blackPawn.Coordinates = (i, j);
                             array[i, j] = blackPawn;
                             amountOfBlackPawns += 1;
-                            Console.Write(array[i,j].Sign);
                         }
                     }
                 }
-                Console.WriteLine();
             }
             
             // Putting white pawns on board
@@ -53,24 +51,29 @@ namespace Polish_draughts
                             blackPawn.Coordinates = (i, j);
                             array[i, j] = blackPawn;
                             amountOfWhitePawns += 1;
-                            Console.Write(array[i,j].Sign);
                         }
                     }
                 }
-                Console.WriteLine();
             }
-            
-            
-            Console.WriteLine(uBound0);
-            Console.WriteLine(uBound1);
-            
-            
-            Console.WriteLine(array);
-            Console.WriteLine(pole);
-            Console.WriteLine($"Your board size: {boardSize} and {result}");
 
-            var whitePawn = new Pawn(false);
-            Console.WriteLine(whitePawn.Sign);
+             void SeeBoard()
+            {
+                for (int i = 0; i <= uBound0; i++)
+                {
+                    for (int j = 0; j <= uBound1; j++)
+                    {
+                        if (array[i, j] == null)
+                            Console.Write("_");
+                        else
+                        {
+                            Console.Write(array[i,j].Sign);
+                        }
+                    }
+                    Console.WriteLine();
+                    }
+            }
+
+            SeeBoard();
 
         }
     }
