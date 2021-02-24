@@ -4,8 +4,9 @@ using Polish_draughts.Models;
 namespace Polish_draughts
 {
     class Program
-    {   
-        static void Main(string[] args)
+    {
+        // Get Board with proper amount and placement of Pawns
+        private static Pawn[,] GetBoard()
         {
             Console.WriteLine("Enter Board size: ");
             
@@ -56,24 +57,35 @@ namespace Polish_draughts
                 }
             }
 
-             void SeeBoard()
-            {
-                for (int i = 0; i <= uBound0; i++)
-                {
-                    for (int j = 0; j <= uBound1; j++)
-                    {
-                        if (array[i, j] == null)
-                            Console.Write("_");
-                        else
-                        {
-                            Console.Write(array[i,j].Sign);
-                        }
-                    }
-                    Console.WriteLine();
-                    }
-            }
+            return array;
+        }
 
-            SeeBoard();
+        // Put Board on the screen with Console.WriteLine...
+        private static void SeeBoard(Pawn[,] array)
+        {
+            int uBound0 = array.GetUpperBound(0);
+            int uBound1 = array.GetUpperBound(1);
+            for (int i = 0; i <= uBound0; i++)
+            {
+                for (int j = 0; j <= uBound1 ; j++)
+                {
+                    if (array[i, j] == null)
+                        Console.Write("_");
+                    else
+                    {
+                        Console.Write(array[i,j].Sign);
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+        
+        // Main program below
+        static void Main(string[] args)
+        {
+            
+            Pawn[,] array = GetBoard();
+            SeeBoard(array);
 
         }
     }
