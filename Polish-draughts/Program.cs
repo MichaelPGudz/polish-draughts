@@ -15,13 +15,18 @@ namespace Polish_draughts
             Console.WriteLine();
             ShowBoard(newArray);
         }
+
+        private static int SetBoardSize()
+        {
+            Console.WriteLine("Enter Board size: ");
+            var userInput = Console.ReadLine();
+            var boardSize = int.Parse(userInput);
+            return boardSize;
+        }
         // Get Board with proper amount and placement of Pawns
         private static Pawn[,] GetBoard()
         {
-            Console.WriteLine("Enter Board size: ");
-            
-            var userInput = Console.ReadLine();
-            int boardSize = int.Parse(userInput);
+            var boardSize = SetBoardSize();
             var result = Board.GetInstance(boardSize);
             var pole = result.GetBoardSize();
             var array = result.GetArray();
