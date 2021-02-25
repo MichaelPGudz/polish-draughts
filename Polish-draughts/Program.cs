@@ -20,58 +20,41 @@ namespace Polish_draughts
         {
             Console.WriteLine("Enter Board size: ");
             
-            var boardSize = Console.ReadLine();
-            int boardSizeInt = int.Parse(boardSize);
-            var result = Board.GetInstance(boardSizeInt);
+            var userInput = Console.ReadLine();
+            int boardSize = int.Parse(userInput);
+            var result = Board.GetInstance(boardSize);
             var pole = result.GetBoardSize();
             var array = result.GetArray();
-            int uBound0 = array.GetUpperBound(0); // Getting upper number of row
-            int uBound1 = array.GetUpperBound(1); // Getting upper number of column 
-            int amountOfBlackPawns = 0;
-            int amountOfWhitePawns = 0;
 
-
-            void PopulateBoard(Pawn[,] array, int boardSize, int pawnsAmount, bool isWhite)
+            void PopulateBoard(Pawn[,] array, int boardSize, bool isWhite)
             {
-                
+                int pawnsAmount = 0;
+                int uBound0 = array.GetUpperBound(0); // Getting upper number of row
+                int uBound1 = array.GetUpperBound(1); // Getting upper number of column 
+                int iterator = !isWhite ? 0 : uBound0 / 2 + 2;
+                for (int i = iterator; i <= uBound0; i++)
+                {
+                    for (int j = 0; j <= uBound1; j++)
+                    {
+                        // Amount of pawns for one player equals half of board size * half of board size minus 2 empty rows! 
+                        if (pawnsAmount < (boardSize - 2) / 2 * (boardSize / 2))
+                        {
+                            if (((i % 2 == 0) & (j % 2 == 1)) | ((i % 2 == 1) & (j % 2 == 0)))
+                            {
+                                var pawnColor = new Pawn(isWhite);
+                                pawnColor.Coordinates = (i, j);
+                                array[i, j] = pawnColor;
+                                pawnsAmount += 1;
+                            }
+                        }
+                    }
+                }
             }
+
             // Putting black pawns on board
-            for (int i = 0; i <= uBound0; i++)
-            {
-                for (int j = 0; j <= uBound1; j++)
-                {
-                    // Amount of pawns for one player equals half of board size * half of board size minus 2 empty rows! 
-                    if (amountOfBlackPawns < (boardSizeInt - 2) / 2 * (boardSizeInt / 2)) 
-                    {
-                        if (((i % 2 == 0) & (j % 2 == 1)) | ((i % 2 == 1) & (j % 2 == 0)))
-                        {
-                            var blackPawn = new Pawn(false);
-                            blackPawn.Coordinates = (i, j);
-                            array[i, j] = blackPawn;
-                            amountOfBlackPawns += 1;
-                        }
-                    }
-                }
-            }
-            
-            // Putting white pawns on board
-            for (int i = uBound0 / 2 + 2; i <= uBound0; i++) // Starting from one row after half of board (including two rows without pawns!)
-            {
-                for (int j = 0 ; j <= uBound1; j++)
-                {
-                    // Amount of pawns for one player equals half of board size * half of board size minus 2 empty rows! 
-                    if (amountOfWhitePawns < (boardSizeInt - 2) / 2 * (boardSizeInt / 2)) 
-                    {
-                        if (((i % 2 == 0) & (j % 2 == 1)) | ((i % 2 == 1) & (j % 2 == 0)))
-                        {
-                            var whitePawn = new Pawn(true);
-                            whitePawn.Coordinates = (i, j);
-                            array[i, j] = whitePawn;
-                            amountOfWhitePawns += 1;
-                        }
-                    }
-                }
-            }
+            PopulateBoard(array, boardSize, false);
+            // // Putting white pawns on board
+            PopulateBoard(array, boardSize, true);
             return array;
         }
 
