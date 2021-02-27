@@ -24,9 +24,15 @@ namespace Polish_draughts.Services
         // Method below checks if there is free field on next index in array
         private static bool IsNextFieldFree(int newX, int newY, Pawn[,] array)
         {
-            if (array[newX, newY] == null)
+            var properPosition = IsPositionInsideBoard(newX, newY, array);
+            if (properPosition)
             {
-                return true;
+                if (array[newX, newY] == null)
+                {
+                    return true;
+                }
+                Console.WriteLine("Your destination is taken");
+                return false;
             }
             return false;
         }
@@ -37,10 +43,18 @@ namespace Polish_draughts.Services
         {
             var directionX = newX - x;
             var directionY = newY - y;
+            newX += directionX;
+            newY += directionY;
 
-            if (array[newX + directionX, newY + directionY] == null)
+            var properPosition = IsPositionInsideBoard(newX, newY, array);
+            if (properPosition)
             {
-                return true;
+                if (array[newX, newY] == null)
+                {
+                    return true;
+                }
+                Console.WriteLine("Your destination is taken");
+                return false;
             }
             return false;
         }
@@ -50,17 +64,15 @@ namespace Polish_draughts.Services
         {
             if (array[x, y] != null)
             {
-                var properPosition = IsPositionInsideBoard(newX, newY, array);
-                if (properPosition)
-                {
-                    if (IsNextFieldFree(newX, newY, array)) // RETURN true if there is place on next field
-                        return true;                        // so you can jump on next field
-                    if (IsFieldBehindPawnFree(x, y, newX, newY, array)) // RETURN null if there is no place
-                        return null;                                    // on next field, but is two fields
-                    Console.WriteLine();                                // further - jump two fields
-                    Console.WriteLine("Your destination is taken");
-                    return false;
-                }
+                // RETURN true if there is place on next field so you can jump on next field
+                if (IsNextFieldFree(newX, newY, array)) 
+                    return true;    
+                Console.Clear();
+                // RETURN null if there is no place on next field, but is two fields further - jump two fields
+                if (IsFieldBehindPawnFree(x, y, newX, newY, array))
+                    return null;
+                return false;
+
             }
             else
             {
@@ -111,7 +123,7 @@ namespace Polish_draughts.Services
             //var pawnColour = array[x, y].Sign;
             
             Console.WriteLine(
-                "Where you want to move pawn? D7 for left up, D9 for right up, D1 for left down, D3 for right down");
+                "Where do you want to move pawn? D7 for left up, D9 for right up, D1 for left down, D3 for right down");
             var input = Console.ReadKey();
             switch (input.Key)
             {
@@ -138,5 +150,4 @@ namespace Polish_draughts.Services
             return array;
         }
     }
-    
 }
