@@ -8,10 +8,33 @@ namespace Polish_draughts.Services
     {
         public void newPlaceForPawn(int x, int y, int newX, int newY, Pawn[,] array)
         {
-            var pawn = array[x, y];
-            array[x, y] = null;
-            pawn.Coordinates = (newX, newY);
-            array[newX, newY] = pawn;
+            var properPosition = isMoveValid(newX, newY, array);
+            Console.WriteLine(properPosition);
+            if (properPosition)
+            {
+                var pawn = array[x, y];
+                array[x, y] = null;
+                pawn.Coordinates = (newX, newY);
+                array[newX, newY] = pawn;  
+            }
+            else
+            {
+                Console.WriteLine("Wrong coordinates - you are outside the board!");
+            }
+
+        }
+
+        
+        public bool isMoveValid(int newX, int newY, Pawn[,] array)
+        {
+            int uBound0 = array.GetUpperBound(0); // Getting upper number of row
+            int uBound1 = array.GetUpperBound(1); // Getting upper number of column
+
+            if (newX < uBound0 & newY < uBound1 & newX > 0 & newY > 0)
+            {
+                return true;
+            }
+            return false;
         }
         
         
