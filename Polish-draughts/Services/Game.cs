@@ -6,11 +6,57 @@ namespace Polish_draughts.Services
 {
     public class Game
     {
-        public void newPlaceForPawn(int x, int y, int newX, int newY, Pawn[,] array)
+        private bool IsPositionInsideBoard(int newX, int newY, Pawn[,] array)
         {
-            var properPosition = isMoveValid(newX, newY, array);
-            Console.WriteLine(properPosition);
-            if (properPosition)
+            int uBound0 = array.GetUpperBound(0); // Getting upper number of row
+            int uBound1 = array.GetUpperBound(1); // Getting upper number of column
+
+            if (newX <= uBound0 & newY <= uBound1 & newX >= 0 & newY >= 0)
+            {
+                return true;
+            }
+            Console.WriteLine();
+            Console.WriteLine("Your new position is outside board");
+            return false;
+        }
+
+        private bool IsNextFieldFree(int newX, int newY, Pawn[,] array)
+        {
+            if (array[newX, newY] == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        private bool IsMoveValid(int x, int y, int newX, int newY, Pawn[,] array)
+        {
+            if (array[x, y] != null)
+            {
+                var properPosition = IsPositionInsideBoard(newX, newY, array);
+                if (properPosition)
+                {
+                    if (IsNextFieldFree(newX, newY, array))
+                        return true;
+                    Console.WriteLine();
+                    Console.WriteLine("Your destination is taken");
+                    return false;
+                }
+            }
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("You've chosen field without proper pawn");
+            }
+            return false;
+        }
+
+        private void NewPlaceForPawn(int x, int y, int newX, int newY, Pawn[,] array)
+        {
+            var validMove = IsMoveValid(x, y, newX, newY, array);
+            Console.WriteLine();
+            if (validMove)
             {
                 var pawn = array[x, y];
                 array[x, y] = null;
@@ -19,24 +65,10 @@ namespace Polish_draughts.Services
             }
             else
             {
-                Console.WriteLine("Wrong coordinates - you are outside the board!");
+                Console.WriteLine("Wrong move!");
             }
-
         }
 
-        
-        public bool isMoveValid(int newX, int newY, Pawn[,] array)
-        {
-            int uBound0 = array.GetUpperBound(0); // Getting upper number of row
-            int uBound1 = array.GetUpperBound(1); // Getting upper number of column
-
-            if (newX < uBound0 & newY < uBound1 & newX > 0 & newY > 0)
-            {
-                return true;
-            }
-            return false;
-        }
-        
         
         public Pawn[,] MakeMove(Pawn[,] array)
         {   
@@ -55,19 +87,19 @@ namespace Polish_draughts.Services
             switch (input.Key)
             {
                 case ConsoleKey.D7:
-                    newPlaceForPawn(x, y, x - 1, y - 1, array);
+                    NewPlaceForPawn(x, y, x - 1, y - 1, array);
                     break;
                 
                 case ConsoleKey.D9:
-                    newPlaceForPawn(x, y, x - 1, y + 1, array);
+                    NewPlaceForPawn(x, y, x - 1, y + 1, array);
                     break;
                 
                 case ConsoleKey.D1:
-                    newPlaceForPawn(x, y, x + 1, y - 1, array);
+                    NewPlaceForPawn(x, y, x + 1, y - 1, array);
                     break;
                 
                 case ConsoleKey.D3:
-                    newPlaceForPawn(x, y,x + 1, y + 1, array);
+                    NewPlaceForPawn(x, y,x + 1, y + 1, array);
                     break;
             }
             return array;
