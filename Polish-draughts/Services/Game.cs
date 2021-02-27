@@ -6,22 +6,12 @@ namespace Polish_draughts.Services
 {
     public class Game
     {
-        public void newPlaceForPawn(string pawnColour, int x, int y, int newX, int newY, Pawn[,] array)
+        public void newPlaceForPawn(int x, int y, int newX, int newY, Pawn[,] array)
         {
+            var pawn = array[x, y];
             array[x, y] = null;
-
-            if (pawnColour == "B")
-            {
-                var blackPawn = new Pawn(false);
-                blackPawn.Coordinates = (newX, newY);
-                array[newX, newY] = blackPawn; 
-            }
-            else if (pawnColour == "W")
-            {
-                var whitePawn = new Pawn(true);
-                whitePawn.Coordinates = (newX, newY);
-                array[newX, newY] = whitePawn;
-            }
+            pawn.Coordinates = (newX, newY);
+            array[newX, newY] = pawn;
         }
         
         
@@ -34,7 +24,7 @@ namespace Polish_draughts.Services
             int y = Int32.Parse(coordinatesSplitted[1].ToString());
             Console.WriteLine(coordinatesSplitted[0]);
             Console.WriteLine(coordinatesSplitted[1]);
-            var pawnColour = array[x, y].Sign;
+            //var pawnColour = array[x, y].Sign;
             
             Console.WriteLine(
                 "Where you want to move pawn? D7 for left up, D9 for right up, D1 for left down, D3 for right down");
@@ -42,19 +32,19 @@ namespace Polish_draughts.Services
             switch (input.Key)
             {
                 case ConsoleKey.D7:
-                    newPlaceForPawn(pawnColour, x, y, x - 1, y - 1, array);
+                    newPlaceForPawn(x, y, x - 1, y - 1, array);
                     break;
                 
                 case ConsoleKey.D9:
-                    newPlaceForPawn(pawnColour, x, y, x - 1, y + 1, array);
+                    newPlaceForPawn(x, y, x - 1, y + 1, array);
                     break;
                 
                 case ConsoleKey.D1:
-                    newPlaceForPawn(pawnColour, x, y, x + 1, y - 1, array);
+                    newPlaceForPawn(x, y, x + 1, y - 1, array);
                     break;
                 
                 case ConsoleKey.D3:
-                    newPlaceForPawn(pawnColour, x, y,x + 1, y - 1, array);
+                    newPlaceForPawn(x, y,x + 1, y + 1, array);
                     break;
             }
             return array;
