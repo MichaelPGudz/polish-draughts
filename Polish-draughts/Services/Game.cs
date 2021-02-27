@@ -29,8 +29,22 @@ namespace Polish_draughts.Services
             return false;
         }
 
+        // Method below checks if there is free field for pawn behind the taken field
+        // (two indexes in array further) with pawn of enemy
+        private bool IsFieldBehindPawnFree(int x, int y, int newX, int newY, Pawn[,] array)
+        {
+            var directionX = newX - x;
+            var directionY = newY - y;
 
-        private bool IsMoveValid(int x, int y, int newX, int newY, Pawn[,] array)
+            if (array[newX + directionX, newY + directionY] == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        private bool IsOneMoveValid(int x, int y, int newX, int newY, Pawn[,] array)
         {
             if (array[x, y] != null)
             {
@@ -54,9 +68,9 @@ namespace Polish_draughts.Services
 
         private void NewPlaceForPawn(int x, int y, int newX, int newY, Pawn[,] array)
         {
-            var validMove = IsMoveValid(x, y, newX, newY, array);
+            var validOneMove = IsOneMoveValid(x, y, newX, newY, array);
             Console.WriteLine();
-            if (validMove)
+            if (validOneMove)
             {
                 var pawn = array[x, y];
                 array[x, y] = null;

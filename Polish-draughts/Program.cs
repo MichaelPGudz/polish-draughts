@@ -11,9 +11,13 @@ namespace Polish_draughts
             Pawn[,] array = GetBoard();
             ShowBoard(array);
             var makingMove = new Game();
-            Pawn[,] newArray = makingMove.MakeMove(array);
-            Console.WriteLine();
-            ShowBoard(newArray);
+            while (true)
+            {
+                Pawn[,] newArray = makingMove.MakeMove(array);
+                Console.WriteLine();
+                ShowBoard(newArray);
+            }
+
         }
 
         private static int SetBoardSize()
