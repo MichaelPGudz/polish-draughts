@@ -19,7 +19,9 @@ namespace Polish_draughts.Services
             Console.WriteLine("Your new position is outside board");
             return false;
         }
+        
 
+        // Method below checks if there is free field on next index in array
         private static bool IsNextFieldFree(int newX, int newY, Pawn[,] array)
         {
             if (array[newX, newY] == null)
@@ -44,18 +46,18 @@ namespace Polish_draughts.Services
         }
 
 
-        private static bool? IsOneMoveValid(int x, int y, int newX, int newY, Pawn[,] array)
+        private static bool? IsMoveValid(int x, int y, int newX, int newY, Pawn[,] array)
         {
             if (array[x, y] != null)
             {
                 var properPosition = IsPositionInsideBoard(newX, newY, array);
                 if (properPosition)
                 {
-                    if (IsNextFieldFree(newX, newY, array))
-                        return true;
-                    if (IsFieldBehindPawnFree(x, y, newX, newY, array))
-                        return null;
-                    Console.WriteLine();
+                    if (IsNextFieldFree(newX, newY, array)) // RETURN true if there is place on next field
+                        return true;                        // so you can jump on next field
+                    if (IsFieldBehindPawnFree(x, y, newX, newY, array)) // RETURN null if there is no place
+                        return null;                                    // on next field, but is two fields
+                    Console.WriteLine();                                // further - jump two fields
                     Console.WriteLine("Your destination is taken");
                     return false;
                 }
@@ -70,17 +72,21 @@ namespace Polish_draughts.Services
 
         private static void NewPlaceForPawn(int x, int y, int newX, int newY, Pawn[,] array)
         {
-            var validOneMove = IsOneMoveValid(x, y, newX, newY, array);
-            if (validOneMove == null)
+            var validOneMove = IsMoveValid(x, y, newX, newY, array);
+            if (validOneMove == null) // there is possibility to take enemy's pawn and jump for two fields
             {
-                var directionX = newX - x;
+                array[newX, newY] = null; // take pawn of your enemy - make its field "null"
+                var directionX = newX - x; // calculate direction of your move in array
                 var directionY = newY - y;
-                newX += directionX;
+                // overwrite your destination coordinates to allow you jump by two fields
+                newX += directionX; 
                 newY += directionY;
             }
             Console.WriteLine();
             if (validOneMove == true | validOneMove == null)
             {
+                // for true you move by one field, for null you move by two with
+                // deleting enemy's pawn from board
                 var pawn = array[x, y];
                 array[x, y] = null;
                 pawn.Coordinates = (newX, newY);
@@ -123,6 +129,10 @@ namespace Polish_draughts.Services
                 
                 case ConsoleKey.D3:
                     NewPlaceForPawn(x, y,x + 1, y + 1, array);
+                    break;
+                
+                default:
+                    Console.WriteLine("Wrong button!");
                     break;
             }
             return array;
