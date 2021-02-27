@@ -6,7 +6,7 @@ namespace Polish_draughts.Services
 {
     public class Game
     {
-        private bool IsPositionInsideBoard(int newX, int newY, Pawn[,] array)
+        private static bool IsPositionInsideBoard(int newX, int newY, Pawn[,] array)
         {
             int uBound0 = array.GetUpperBound(0); // Getting upper number of row
             int uBound1 = array.GetUpperBound(1); // Getting upper number of column
@@ -20,7 +20,7 @@ namespace Polish_draughts.Services
             return false;
         }
 
-        private bool IsNextFieldFree(int newX, int newY, Pawn[,] array)
+        private static bool IsNextFieldFree(int newX, int newY, Pawn[,] array)
         {
             if (array[newX, newY] == null)
             {
@@ -31,7 +31,7 @@ namespace Polish_draughts.Services
 
         // Method below checks if there is free field for pawn behind the taken field
         // (two indexes in array further) with pawn of enemy
-        private bool IsFieldBehindPawnFree(int x, int y, int newX, int newY, Pawn[,] array)
+        private static bool IsFieldBehindPawnFree(int x, int y, int newX, int newY, Pawn[,] array)
         {
             var directionX = newX - x;
             var directionY = newY - y;
@@ -44,7 +44,7 @@ namespace Polish_draughts.Services
         }
 
 
-        private bool IsOneMoveValid(int x, int y, int newX, int newY, Pawn[,] array)
+        private static bool? IsOneMoveValid(int x, int y, int newX, int newY, Pawn[,] array)
         {
             if (array[x, y] != null)
             {
@@ -53,6 +53,8 @@ namespace Polish_draughts.Services
                 {
                     if (IsNextFieldFree(newX, newY, array))
                         return true;
+                    if (IsFieldBehindPawnFree(x, y, newX, newY, array))
+                        return null;
                     Console.WriteLine();
                     Console.WriteLine("Your destination is taken");
                     return false;
@@ -66,11 +68,18 @@ namespace Polish_draughts.Services
             return false;
         }
 
-        private void NewPlaceForPawn(int x, int y, int newX, int newY, Pawn[,] array)
+        private static void NewPlaceForPawn(int x, int y, int newX, int newY, Pawn[,] array)
         {
             var validOneMove = IsOneMoveValid(x, y, newX, newY, array);
+            if (validOneMove == null)
+            {
+                var directionX = newX - x;
+                var directionY = newY - y;
+                newX += directionX;
+                newY += directionY;
+            }
             Console.WriteLine();
-            if (validOneMove)
+            if (validOneMove == true | validOneMove == null)
             {
                 var pawn = array[x, y];
                 array[x, y] = null;
