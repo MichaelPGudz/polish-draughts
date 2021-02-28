@@ -62,23 +62,31 @@ namespace Polish_draughts.Services
 
         private static bool? IsMoveValid(string color, int x, int y, int newX, int newY, Pawn[,] array)
         {
-            // If field has pawn and this pawn has colour of current player
-            if ((array[x, y] != null) & (array[x,y].Sign == color))
-            {
-                // RETURN true if there is place on next field so you can jump on next field
-                if (IsNextFieldFree(newX, newY, array)) 
-                    return true;    
-                Console.Clear();
-                // RETURN null if there is no place on next field, but is two fields further - jump two fields
-                if (IsFieldBehindPawnFree(x, y, newX, newY, array))
-                    return null;
-                return false;
-
+            // If field has pawn
+            if (array[x, y] != null)
+            {   
+                //  If the pawn has colour of current player
+                if (array[x, y].Sign == color)
+                {
+                    // RETURN true if there is place on next field so you can jump on next field
+                    if (IsNextFieldFree(newX, newY, array)) 
+                        return true;    
+                    Console.Clear();
+                    // RETURN null if there is no place on next field, but is two fields further AND
+                    // there is your enemy's pawn between - jump two fields
+                    if (IsFieldBehindPawnFree(x, y, newX, newY, array) & (array[newX,newY].Sign != color))
+                        return null;
+                    Console.WriteLine("\nYou are trying to beat your own pawn!");
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("\nYou are trying to move not your pawn!");
+                }
             }
             else
             {
-                Console.WriteLine();
-                Console.WriteLine("You've chosen field without proper pawn");
+                Console.WriteLine("\nYou've chosen field without pawn");
             }
             return false;
         }
