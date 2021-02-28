@@ -60,9 +60,10 @@ namespace Polish_draughts.Services
         }
 
 
-        private static bool? IsMoveValid(int x, int y, int newX, int newY, Pawn[,] array)
+        private static bool? IsMoveValid(string color, int x, int y, int newX, int newY, Pawn[,] array)
         {
-            if (array[x, y] != null)
+            // If field has pawn and this pawn has colour of current player
+            if ((array[x, y] != null) & (array[x,y].Sign == color))
             {
                 // RETURN true if there is place on next field so you can jump on next field
                 if (IsNextFieldFree(newX, newY, array)) 
@@ -82,9 +83,9 @@ namespace Polish_draughts.Services
             return false;
         }
 
-        private static void NewPlaceForPawn(int x, int y, int newX, int newY, Pawn[,] array)
+        private static void NewPlaceForPawn(string color, int x, int y, int newX, int newY, Pawn[,] array)
         {
-            var validOneMove = IsMoveValid(x, y, newX, newY, array);
+            var validOneMove = IsMoveValid(color, x, y, newX, newY, array);
             if (validOneMove == null) // there is possibility to take enemy's pawn and jump for two fields
             {
                 array[newX, newY] = null; // take pawn of your enemy - make its field "null"
@@ -111,7 +112,7 @@ namespace Polish_draughts.Services
         }
 
         
-        public Pawn[,] MakeMove(Pawn[,] array)
+        public Pawn[,] MakeMove(string color, Pawn[,] array)
         {   
             Console.WriteLine("Please provide coordinates of Pawn you want to move: eg. 13, or 41");
             var coordinates = Console.ReadLine();
@@ -129,22 +130,22 @@ namespace Polish_draughts.Services
             {
                 case ConsoleKey.D7:
                     Console.Clear();
-                    NewPlaceForPawn(x, y, x - 1, y - 1, array);
+                    NewPlaceForPawn(color, x, y, x - 1, y - 1, array);
                     break;
                 
                 case ConsoleKey.D9:
                     Console.Clear();
-                    NewPlaceForPawn(x, y, x - 1, y + 1, array);
+                    NewPlaceForPawn(color, x, y, x - 1, y + 1, array);
                     break;
                 
                 case ConsoleKey.D1:
                     Console.Clear();
-                    NewPlaceForPawn(x, y, x + 1, y - 1, array);
+                    NewPlaceForPawn(color, x, y, x + 1, y - 1, array);
                     break;
                 
                 case ConsoleKey.D3:
                     Console.Clear();
-                    NewPlaceForPawn(x, y,x + 1, y + 1, array);
+                    NewPlaceForPawn(color, x, y,x + 1, y + 1, array);
                     break;
                 
                 default:
