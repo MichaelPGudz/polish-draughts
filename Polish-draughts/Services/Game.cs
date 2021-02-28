@@ -128,18 +128,22 @@ namespace Polish_draughts.Services
             switch (input.Key)
             {
                 case ConsoleKey.D7:
+                    Console.Clear();
                     NewPlaceForPawn(x, y, x - 1, y - 1, array);
                     break;
                 
                 case ConsoleKey.D9:
+                    Console.Clear();
                     NewPlaceForPawn(x, y, x - 1, y + 1, array);
                     break;
                 
                 case ConsoleKey.D1:
+                    Console.Clear();
                     NewPlaceForPawn(x, y, x + 1, y - 1, array);
                     break;
                 
                 case ConsoleKey.D3:
+                    Console.Clear();
                     NewPlaceForPawn(x, y,x + 1, y + 1, array);
                     break;
                 

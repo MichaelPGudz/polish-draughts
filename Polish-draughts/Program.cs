@@ -9,15 +9,21 @@ namespace Polish_draughts
         static void Main(string[] args)
         {
             Pawn[,] array = GetBoard();
-            ShowBoard(array);
             var makingMove = new Game();
+            int turn = 0;
+            string message = "\nWhite's turn\n";
+            Console.Clear();
+            Console.WriteLine(message);
+            ShowBoard(array);
+            
             while (true)
             {
+                message = (turn % 2 == 0) ? "Black's turn" : "White's turn";
                 Pawn[,] newArray = makingMove.MakeMove(array);
-                Console.WriteLine();
+                Console.WriteLine($"\n{message}\n");
                 ShowBoard(newArray);
+                turn += 1;
             }
-
         }
 
         private static int SetBoardSize()
