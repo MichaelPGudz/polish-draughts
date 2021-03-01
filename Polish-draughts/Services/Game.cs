@@ -74,9 +74,13 @@ namespace Polish_draughts.Services
                     Console.Clear();
                     // RETURN null if there is no place on next field, but is two fields further AND
                     // there is your enemy's pawn between - jump two fields
-                    if (IsFieldBehindPawnFree(x, y, newX, newY, array) & (array[newX,newY].Sign != color))
-                        return null;
-                    Console.WriteLine("\nYou are trying to beat your own pawn!");
+                    if (IsFieldBehindPawnFree(x, y, newX, newY, array))
+                        if (array[newX,newY].Sign != color)
+                            return null;
+                        else
+                        {
+                            Console.WriteLine("\nYou are trying to beat your own pawn!"); 
+                        }
                     return false;
                 }
                 else
