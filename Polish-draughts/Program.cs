@@ -84,19 +84,33 @@ namespace Polish_draughts
         {
             int uBound0 = array.GetUpperBound(0);
             int uBound1 = array.GetUpperBound(1);
-            for (int i = 0; i <= uBound0; i++)
+            Console.Write("   ");
+            for (int i = 0; i < (uBound0+1); i++)
             {
-                for (int j = 0; j <= uBound1; j++)
+                Console.Write((char) ('A' + i));
+                Console.Write(' ');
+            }
+
+            Console.WriteLine(' ');
+            for (int i = 0; i <= uBound0; i++) 
+            {
+                if (i < uBound0)
+                {
+                    Console.Write(' ');
+                }
+
+                Console.Write($"{i+1} ");
+            for (int j = 0; j <= uBound1; j++)
                 {
                     if (array[i, j] == null)
-                        Console.Write("_");
+                        Console.Write("_ ");
                     else
                     {
-                        Console.Write(array[i, j].Sign);
+                        Console.Write($"{array[i, j].Sign} ");
                     }
                 }
 
-                Console.WriteLine();
+                Console.WriteLine("");
             }
         }
 
