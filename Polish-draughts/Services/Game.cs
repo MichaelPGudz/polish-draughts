@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using Polish_draughts.Models;
 
 namespace Polish_draughts.Services
@@ -123,11 +122,40 @@ namespace Polish_draughts.Services
             }
         }
 
+        public int[] TransformCoordinates(int boardSize, string coordinates)
+        {
+            char[] characters = new char[boardSize];
+            int [] transformedCoordinates = new int [2];
+            for (int i = 0; i < boardSize; i++)
+            {
+                characters[i] = (char)('A' + i);
+            }
+
+            for (var i = 0; i < characters.Length; i++)
+            {
+                if (characters[i] == coordinates[0])
+                {
+                    transformedCoordinates[0] = i;
+                }
+            }
+
+            for (var i = 1; i <= boardSize; i++)
+            {
+                if (i == coordinates[1])
+                {
+                    transformedCoordinates[1] = coordinates[1];
+                }
+            }
+
+            return transformedCoordinates;
+        }
         
         public Pawn[,] MakeMove(string color, Pawn[,] array)
         {   
             Console.WriteLine("Please provide coordinates of Pawn you want to move: eg. 13, or 41");
             var coordinates = Console.ReadLine();
+            // var transformedCoordinates = TransformCoordinates(10, coordinates);
+            // Console.WriteLine(transformedCoordinates);
             char[] coordinatesSplitted = coordinates.ToCharArray();
             int x = Int32.Parse(coordinatesSplitted[0].ToString());
             int y = Int32.Parse(coordinatesSplitted[1].ToString());
