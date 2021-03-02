@@ -216,14 +216,28 @@ namespace Polish_draughts.Services
         
         
         public bool MakeMove(string color, Pawn[,] array)
-        {   
+        {
+            int x;
+            int y;
             Console.WriteLine("Please provide coordinates of Pawn you want to move: eg. 13, or 41");
-            var coordinates = Console.ReadLine();
-            // var transformedCoordinates = TransformCoordinates(10, coordinates);
-            // Console.WriteLine(transformedCoordinates);
-            char[] coordinatesSplitted = coordinates.ToCharArray();
-            int x = Int32.Parse(coordinatesSplitted[0].ToString());
-            int y = Int32.Parse(coordinatesSplitted[1].ToString());
+            while (true)
+            {
+                var coordinates = Console.ReadLine();
+                // var transformedCoordinates = TransformCoordinates(10, coordinates);
+                // Console.WriteLine(transformedCoordinates);
+                try
+                {
+                    char[] coordinatesSplitted = coordinates.ToCharArray();
+                    x = Int32.Parse(coordinatesSplitted[0].ToString());
+                    y = Int32.Parse(coordinatesSplitted[1].ToString());
+                    break;
+                }
+                catch
+                {
+                    Console.WriteLine("\nWrong coordinates!\n");
+                }
+            }
+
 
             Console.WriteLine(
                 "Where do you want to move pawn? D7 for left up, D9 for right up, D1 for left down, D3 for right down");

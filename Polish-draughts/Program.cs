@@ -38,9 +38,21 @@ namespace Polish_draughts
 
         private static int SetBoardSize()
         {
+            int boardSize;
             Console.WriteLine("Enter Board size: ");
             var userInput = Console.ReadLine();
-            var boardSize = int.Parse(userInput);
+            while (true)
+            {
+                try
+                {
+                    boardSize = int.Parse(userInput);
+                    break;
+                }
+                catch
+                {
+                    Console.WriteLine("\nWrong size!\n");
+                }
+            }
             return boardSize;
         }
 
