@@ -34,40 +34,42 @@ namespace Polish_draughts.Services
         }
         
         
-        private static bool IsPositionInsideBoard(int newX, int newY, Pawn[,] array)
+        private Tuple<bool, string> IsPositionInsideBoard(int newX, int newY, Pawn[,] array)
         {
             int uBound0 = array.GetUpperBound(0); // Getting upper number of row
             int uBound1 = array.GetUpperBound(1); // Getting upper number of column
 
             if (newX <= uBound0 & newY <= uBound1 & newX >= 0 & newY >= 0)
             {
-                return true;
+                return new Tuple<bool, string>(true, String.Empty);
             }
-            Console.WriteLine();
-            Console.WriteLine("Your new position is outside board");
-            return false;
+            // Console.WriteLine();
+            // Console.WriteLine("Your new position is outside board");
+            string message = "Your new position is outside board";
+            return new Tuple<bool, string>(false, message);
         }
         
 
         // Method below checks if there is free field on next index in array
-        private static bool IsNextFieldFree(int newX, int newY, Pawn[,] array)
+        private Tuple<bool, string> IsNextFieldFree(int newX, int newY, Pawn[,] array)
         {
             var properPosition = IsPositionInsideBoard(newX, newY, array);
-            if (properPosition)
+            if (properPosition.Item1)
             {
                 if (array[newX, newY] == null)
                 {
-                    return true;
+                    return new Tuple<bool, string>(true, String.Empty);
                 }
-                Console.WriteLine("Your destination is taken");
-                return false;
+                //Console.WriteLine("Your destination is taken");
+                string message = "Your destination is taken";
+                return new Tuple<bool, string>(false, message);
             }
-            return false;
+            return new Tuple<bool, string>(false, properPosition.Item2);
         }
 
         // Method below checks if there is free field for pawn behind the taken field
         // (two indexes in array further) with pawn of enemy
-        private static bool IsFieldBehindPawnFree(int x, int y, int newX, int newY, Pawn[,] array)
+        private Tuple<bool, string> IsFieldBehindPawnFree(int x, int y, int newX, int newY, Pawn[,] array)
         {
             var directionX = newX - x;
             var directionY = newY - y;
@@ -75,21 +77,23 @@ namespace Polish_draughts.Services
             newY += directionY;
 
             var properPosition = IsPositionInsideBoard(newX, newY, array);
-            if (properPosition)
+            if (properPosition.Item1)
             {
                 if (array[newX, newY] == null)
                 {
-                    return true;
+                    return new Tuple<bool, string>(true, String.Empty);
                 }
-                Console.WriteLine("Your destination is taken");
-                return false;
+                //Console.WriteLine("Your destination is taken");
+                string message = "Your destination is taken";
+                return new Tuple<bool, string>(false, message);
             }
-            return false;
+            return new Tuple<bool, string>(false, properPosition.Item2);
         }
 
 
-        private static bool? IsMoveValid(string color, int x, int y, int newX, int newY, Pawn[,] array)
+        private Tuple<bool?, string> IsMoveValid(string color, int x, int y, int newX, int newY, Pawn[,] array)
         {
+            string message = "";
             // If field has pawn
             if (array[x, y] != null)
             {   
@@ -97,30 +101,39 @@ namespace Polish_draughts.Services
                 if (array[x, y].Sign == color)
                 {
                     // RETURN true if there is place on next field so you can jump on next field
-                    if (IsNextFieldFree(newX, newY, array)) 
-                        return true;    
+                    var nextFieldFree = IsNextFieldFree(newX, newY, array);
+                    if (nextFieldFree.Item1) 
+                        return new Tuple<bool?, string>(true, String.Empty);   
                     Console.Clear();
                     // RETURN null if there is no place on next field, but is two fields further AND
                     // there is your enemy's pawn between - jump two fields
-                    if (IsFieldBehindPawnFree(x, y, newX, newY, array))
+                    var fieldBehindFree = IsFieldBehindPawnFree(x, y, newX, newY, array);
+                    if (fieldBehindFree.Item1)
                         if (array[newX,newY].Sign != color)
-                            return null;
+                            return new Tuple<bool?, string>(null, String.Empty);
                         else
                         {
-                            Console.WriteLine("\nYou are trying to beat your own pawn!"); 
+                            //Console.WriteLine("\nYou are trying to beat your own pawn!");  
+                            message = "You are trying to beat your own pawn";
+                            return new Tuple<bool?, string>(false, message);
                         }
-                    return false;
+
+                    message = fieldBehindFree.Item2;
+                    return new Tuple<bool?, string>(false, message);
                 }
                 else
                 {
-                    Console.WriteLine("\nYou are trying to move not your pawn!");
+                    //Console.WriteLine("\nYou are trying to move not your pawn!");
+                    message = "You are trying to move not your pawn!";
+                    return new Tuple<bool?, string>(false, message);
                 }
             }
             else
             {
-                Console.WriteLine("\nYou've chosen field without pawn");
+                //Console.WriteLine("\nYou've chosen field without pawn");
+                message = "You've chosen field without pawn";
+                return new Tuple<bool?, string>(false, message);
             }
-            return false;
         }
         
         
@@ -128,61 +141,56 @@ namespace Polish_draughts.Services
         // if yes, then checks if there are free fields within board boundaries behind
         // those pawns -> returns true (next move of the same player required)
         // if no, or there is no free fields -> returns false (next move is not required)
-        private static bool IsNextMoveRequired(string color, int newX, int newY, Pawn[,] array)
+        private bool IsNextMoveRequired(string color, int newX, int newY, Pawn[,] array)
         {
-            if (IsFieldBehindPawnFree(newX, newY, newX + 1, newY + 1, array))
+            if (IsFieldBehindPawnFree(newX, newY, newX + 1, newY + 1, array).Item1)
             {
                 if (array[newX + 1, newY + 1] != null)
                 {
                     if (array[newX + 1, newY + 1].Sign != color)
                     {
-                        Console.Clear();
                         return true;
                     }
                 } 
             }
-            if (IsFieldBehindPawnFree(newX, newY, newX - 1, newY - 1, array))
+            if (IsFieldBehindPawnFree(newX, newY, newX - 1, newY - 1, array).Item1)
             {
                 if (array[newX - 1, newY - 1] != null)
                 {
                     if (array[newX - 1, newY - 1].Sign != color)
                     {
-                        Console.Clear();
                         return true;
                     }
                 } 
             }
-            if (IsFieldBehindPawnFree(newX, newY, newX + 1, newY - 1, array))
+            if (IsFieldBehindPawnFree(newX, newY, newX + 1, newY - 1, array).Item1)
             {
                 if (array[newX + 1, newY - 1] != null)
                 {
                     if (array[newX + 1, newY - 1].Sign != color)
                     {
-                        Console.Clear();
                         return true;
                     }
                 } 
             }
-            if (IsFieldBehindPawnFree(newX, newY, newX - 1, newY + 1, array))
+            if (IsFieldBehindPawnFree(newX, newY, newX - 1, newY + 1, array).Item1)
             {
                 if (array[newX - 1, newY + 1] != null)
                 {
                     if (array[newX - 1, newY + 1].Sign != color)
                     {
-                        Console.Clear();
                         return true;
                     }
                 } 
             }
-            Console.Clear();
             return false;
         }
         
 
-        private static bool NewPlaceForPawn(string color, int x, int y, int newX, int newY, Pawn[,] array)
+        private bool NewPlaceForPawn(string color, int x, int y, int newX, int newY, Pawn[,] array)
         {
             var validOneMove = IsMoveValid(color, x, y, newX, newY, array);
-            if (validOneMove == null) // there is possibility to take enemy's pawn and jump for two fields
+            if (validOneMove.Item1 == null) // there is possibility to take enemy's pawn and jump for two fields
             {
                 array[newX, newY] = null; // take pawn of your enemy - make its field "null"
                 var directionX = newX - x; // calculate direction of your move in array
@@ -192,7 +200,7 @@ namespace Polish_draughts.Services
                 newY += directionY;
             }
             Console.WriteLine();
-            if (validOneMove == true | validOneMove == null)
+            if (validOneMove.Item1 == true | validOneMove.Item1 == null)
             {
                 // for true you move by one field, for null you move by two with
                 // deleting enemy's pawn from board
@@ -203,7 +211,7 @@ namespace Polish_draughts.Services
                 // checks while moving to new coordinates after beating if there is required next move of the same player
                 // If move is required -> returns true
                 // If not -> function goes further and, finally, returns false
-                if (validOneMove == null)
+                if (validOneMove.Item1 == null)
                 {
                     var nextMove = IsNextMoveRequired(color, newX, newY, array);
                     if (nextMove)
@@ -212,7 +220,7 @@ namespace Polish_draughts.Services
             }
             else
             {
-                Console.WriteLine("Wrong move!");
+                Console.WriteLine(validOneMove.Item2);
             }
             return false;
         }
