@@ -200,12 +200,15 @@ namespace Polish_draughts.Services
                 array[x, y] = null;
                 pawn.Coordinates = (newX, newY);
                 array[newX, newY] = pawn;
-                // checks after moving to new coordinates if there is required next move of the same player
+                // checks while moving to new coordinates after beating if there is required next move of the same player
                 // If move is required -> returns true
                 // If not -> function goes further and, finally, returns false
-                var nextMove = IsNextMoveRequired(color, newX, newY, array);
-                if (nextMove)
-                    return true;
+                if (validOneMove == null)
+                {
+                    var nextMove = IsNextMoveRequired(color, newX, newY, array);
+                    if (nextMove)
+                        return true;
+                }
             }
             else
             {
