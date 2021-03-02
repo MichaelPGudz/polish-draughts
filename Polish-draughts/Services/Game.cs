@@ -123,7 +123,11 @@ namespace Polish_draughts.Services
             return false;
         }
         
-
+        
+        // function checks if there are other enemy's pawns around newX and newY destination
+        // if yes, then checks if there are free fields within board boundaries behind
+        // those pawns -> returns true (next move of the same player required)
+        // if no, or there is no free fields -> returns false (next move is not required)
         private static bool IsNextMoveRequired(string color, int newX, int newY, Pawn[,] array)
         {
             if (IsFieldBehindPawnFree(newX, newY, newX + 1, newY + 1, array))
@@ -196,6 +200,9 @@ namespace Polish_draughts.Services
                 array[x, y] = null;
                 pawn.Coordinates = (newX, newY);
                 array[newX, newY] = pawn;
+                // checks after moving to new coordinates if there is required next move of the same player
+                // If move is required -> returns true
+                // If not -> function goes further and, finally, returns false
                 var nextMove = IsNextMoveRequired(color, newX, newY, array);
                 if (nextMove)
                     return true;
@@ -226,6 +233,8 @@ namespace Polish_draughts.Services
                 case ConsoleKey.D7:
                     Console.Clear();
                     if (NewPlaceForPawn(color, x, y, x - 1, y - 1, array))
+                        // returns true after move in all cases, when NewPlaceForPawn
+                        // is true -> next move of current player is required
                         return true;
                     break;
                 
@@ -248,9 +257,10 @@ namespace Polish_draughts.Services
                     break;
                 
                 default:
-                    Console.WriteLine("Wrong button!");
+                    Console.WriteLine("\nWrong button!\n");
                     break;
             }
+            // returns false after move when there is no need of current's player next move
             return false;
         }
     }

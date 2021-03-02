@@ -21,8 +21,12 @@ namespace Polish_draughts
             while (true)
             {
                 Pawn[,] previousMoveArray = (Pawn[,]) array.Clone();
+                // making move gives also an information about next move -> is current player required to do next move
+                // or is it allowed to change turn for other player
                 nextMove = makingMove.MakeMove(color, array);
                 bool boardEqual = AreBoardsEqual(array, previousMoveArray);
+                // changing turns only if proper move was done (there is difference between current and previous array
+                // and nextMove is not required - current player has no more pawns to beat
                 if (!boardEqual & nextMove == false)
                     turn += 1;
                 message = (turn % 2 == 1) ? "Black's turn" : "White's turn";
@@ -40,6 +44,7 @@ namespace Polish_draughts
             return boardSize;
         }
 
+        
         // Get Board with proper amount and placement of Pawns
         private static Pawn[,] GetBoard()
         {
