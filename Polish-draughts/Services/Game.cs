@@ -43,8 +43,6 @@ namespace Polish_draughts.Services
             {
                 return new Tuple<bool, string>(true, String.Empty);
             }
-            // Console.WriteLine();
-            // Console.WriteLine("Your new position is outside board");
             string message = "Your new position is outside board";
             return new Tuple<bool, string>(false, message);
         }
@@ -60,7 +58,6 @@ namespace Polish_draughts.Services
                 {
                     return new Tuple<bool, string>(true, String.Empty);
                 }
-                //Console.WriteLine("Your destination is taken");
                 string message = "Your destination is taken";
                 return new Tuple<bool, string>(false, message);
             }
@@ -83,7 +80,6 @@ namespace Polish_draughts.Services
                 {
                     return new Tuple<bool, string>(true, String.Empty);
                 }
-                //Console.WriteLine("Your destination is taken");
                 string message = "Your destination is taken";
                 return new Tuple<bool, string>(false, message);
             }
@@ -103,8 +99,7 @@ namespace Polish_draughts.Services
                     // RETURN true if there is place on next field so you can jump on next field
                     var nextFieldFree = IsNextFieldFree(newX, newY, array);
                     if (nextFieldFree.Item1) 
-                        return new Tuple<bool?, string>(true, String.Empty);   
-                    Console.Clear();
+                        return new Tuple<bool?, string>(true, String.Empty);
                     // RETURN null if there is no place on next field, but is two fields further AND
                     // there is your enemy's pawn between - jump two fields
                     var fieldBehindFree = IsFieldBehindPawnFree(x, y, newX, newY, array);
@@ -113,7 +108,6 @@ namespace Polish_draughts.Services
                             return new Tuple<bool?, string>(null, String.Empty);
                         else
                         {
-                            //Console.WriteLine("\nYou are trying to beat your own pawn!");  
                             message = "You are trying to beat your own pawn";
                             return new Tuple<bool?, string>(false, message);
                         }
@@ -123,14 +117,12 @@ namespace Polish_draughts.Services
                 }
                 else
                 {
-                    //Console.WriteLine("\nYou are trying to move not your pawn!");
                     message = "You are trying to move not your pawn!";
                     return new Tuple<bool?, string>(false, message);
                 }
             }
             else
             {
-                //Console.WriteLine("\nYou've chosen field without pawn");
                 message = "You've chosen field without pawn";
                 return new Tuple<bool?, string>(false, message);
             }
