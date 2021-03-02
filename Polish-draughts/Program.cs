@@ -39,7 +39,7 @@ namespace Polish_draughts
         private static int SetBoardSize()
         {
             int boardSize;
-            Console.WriteLine("Enter Board size: ");
+            Console.WriteLine("\nEnter Board size: ");
             var userInput = Console.ReadLine();
             while (true)
             {
@@ -102,6 +102,7 @@ namespace Polish_draughts
         {
             int uBound0 = array.GetUpperBound(0);
             int uBound1 = array.GetUpperBound(1);
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.Write("   ");
             for (int i = 0; i < (uBound0+1); i++)
             {
@@ -124,12 +125,23 @@ namespace Polish_draughts
                         Console.Write("_ ");
                     else
                     {
+                        if (array[i, j].Sign == "W")
+                        {
+                            Console.ForegroundColor = ConsoleColor.White;}
+                        
+                        if (array[i,j].Sign == "B")
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        }
                         Console.Write($"{array[i, j].Sign} ");
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
                     }
                 }
 
                 Console.WriteLine("");
             }
+
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         // Function checks if boards from current and previous moves are equal to see if there was 

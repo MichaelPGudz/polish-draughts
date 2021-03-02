@@ -219,7 +219,7 @@ namespace Polish_draughts.Services
         {
             int x;
             int y;
-            Console.WriteLine("Please provide coordinates of Pawn you want to move: eg. 13, or 41");
+            Console.WriteLine("\nPlease provide coordinates of Pawn you want to move: eg. 13, or 41");
             while (true)
             {
                 var coordinates = Console.ReadLine();
@@ -240,7 +240,7 @@ namespace Polish_draughts.Services
 
 
             Console.WriteLine(
-                "Where do you want to move pawn? D7 for left up, D9 for right up, D1 for left down, D3 for right down");
+                "\nWhere do you want to move pawn? D7 for left up, D9 for right up, D1 for left down, D3 for right down");
             var input = Console.ReadKey();
             switch (input.Key)
             {
