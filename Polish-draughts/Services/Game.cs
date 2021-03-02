@@ -5,6 +5,35 @@ namespace Polish_draughts.Services
 {
     public class Game
     {
+        public int[] TransformCoordinates(int boardSize, string coordinates)
+        {
+            char[] characters = new char[boardSize];
+            int [] transformedCoordinates = new int [2];
+            for (int i = 0; i < boardSize; i++)
+            {
+                characters[i] = (char)('A' + i);
+            }
+
+            for (var i = 0; i < characters.Length; i++)
+            {
+                if (characters[i] == coordinates[0])
+                {
+                    transformedCoordinates[0] = i;
+                }
+            }
+
+            for (var i = 1; i <= boardSize; i++)
+            {
+                if (i == coordinates[1])
+                {
+                    transformedCoordinates[1] = coordinates[1];
+                }
+            }
+
+            return transformedCoordinates;
+        }
+        
+        
         private static bool IsPositionInsideBoard(int newX, int newY, Pawn[,] array)
         {
             int uBound0 = array.GetUpperBound(0); // Getting upper number of row
@@ -93,8 +122,60 @@ namespace Polish_draughts.Services
             }
             return false;
         }
+        
 
-        private static void NewPlaceForPawn(string color, int x, int y, int newX, int newY, Pawn[,] array)
+        private static bool IsNextMoveRequired(string color, int newX, int newY, Pawn[,] array)
+        {
+            if (IsFieldBehindPawnFree(newX, newY, newX + 1, newY + 1, array))
+            {
+                if (array[newX + 1, newY + 1] != null)
+                {
+                    if (array[newX + 1, newY + 1].Sign != color)
+                    {
+                        Console.Clear();
+                        return true;
+                    }
+                } 
+            }
+            if (IsFieldBehindPawnFree(newX, newY, newX - 1, newY - 1, array))
+            {
+                if (array[newX - 1, newY - 1] != null)
+                {
+                    if (array[newX - 1, newY - 1].Sign != color)
+                    {
+                        Console.Clear();
+                        return true;
+                    }
+                } 
+            }
+            if (IsFieldBehindPawnFree(newX, newY, newX + 1, newY - 1, array))
+            {
+                if (array[newX + 1, newY - 1] != null)
+                {
+                    if (array[newX + 1, newY - 1].Sign != color)
+                    {
+                        Console.Clear();
+                        return true;
+                    }
+                } 
+            }
+            if (IsFieldBehindPawnFree(newX, newY, newX - 1, newY + 1, array))
+            {
+                if (array[newX - 1, newY + 1] != null)
+                {
+                    if (array[newX - 1, newY + 1].Sign != color)
+                    {
+                        Console.Clear();
+                        return true;
+                    }
+                } 
+            }
+            Console.Clear();
+            return false;
+        }
+        
+
+        private static bool NewPlaceForPawn(string color, int x, int y, int newX, int newY, Pawn[,] array)
         {
             var validOneMove = IsMoveValid(color, x, y, newX, newY, array);
             if (validOneMove == null) // there is possibility to take enemy's pawn and jump for two fields
@@ -114,43 +195,20 @@ namespace Polish_draughts.Services
                 var pawn = array[x, y];
                 array[x, y] = null;
                 pawn.Coordinates = (newX, newY);
-                array[newX, newY] = pawn;  
+                array[newX, newY] = pawn;
+                var nextMove = IsNextMoveRequired(color, newX, newY, array);
+                if (nextMove)
+                    return true;
             }
             else
             {
                 Console.WriteLine("Wrong move!");
             }
-        }
-
-        public int[] TransformCoordinates(int boardSize, string coordinates)
-        {
-            char[] characters = new char[boardSize];
-            int [] transformedCoordinates = new int [2];
-            for (int i = 0; i < boardSize; i++)
-            {
-                characters[i] = (char)('A' + i);
-            }
-
-            for (var i = 0; i < characters.Length; i++)
-            {
-                if (characters[i] == coordinates[0])
-                {
-                    transformedCoordinates[0] = i;
-                }
-            }
-
-            for (var i = 1; i <= boardSize; i++)
-            {
-                if (i == coordinates[1])
-                {
-                    transformedCoordinates[1] = coordinates[1];
-                }
-            }
-
-            return transformedCoordinates;
+            return false;
         }
         
-        public Pawn[,] MakeMove(string color, Pawn[,] array)
+        
+        public bool MakeMove(string color, Pawn[,] array)
         {   
             Console.WriteLine("Please provide coordinates of Pawn you want to move: eg. 13, or 41");
             var coordinates = Console.ReadLine();
@@ -159,10 +217,7 @@ namespace Polish_draughts.Services
             char[] coordinatesSplitted = coordinates.ToCharArray();
             int x = Int32.Parse(coordinatesSplitted[0].ToString());
             int y = Int32.Parse(coordinatesSplitted[1].ToString());
-            Console.WriteLine(coordinatesSplitted[0]);
-            Console.WriteLine(coordinatesSplitted[1]);
-            //var pawnColour = array[x, y].Sign;
-            
+
             Console.WriteLine(
                 "Where do you want to move pawn? D7 for left up, D9 for right up, D1 for left down, D3 for right down");
             var input = Console.ReadKey();
@@ -170,29 +225,33 @@ namespace Polish_draughts.Services
             {
                 case ConsoleKey.D7:
                     Console.Clear();
-                    NewPlaceForPawn(color, x, y, x - 1, y - 1, array);
+                    if (NewPlaceForPawn(color, x, y, x - 1, y - 1, array))
+                        return true;
                     break;
                 
                 case ConsoleKey.D9:
                     Console.Clear();
-                    NewPlaceForPawn(color, x, y, x - 1, y + 1, array);
+                    if (NewPlaceForPawn(color, x, y, x - 1, y + 1, array))
+                        return true;
                     break;
                 
                 case ConsoleKey.D1:
                     Console.Clear();
-                    NewPlaceForPawn(color, x, y, x + 1, y - 1, array);
+                    if (NewPlaceForPawn(color, x, y, x + 1, y - 1, array))
+                        return true;
                     break;
                 
                 case ConsoleKey.D3:
                     Console.Clear();
-                    NewPlaceForPawn(color, x, y,x + 1, y + 1, array);
+                    if (NewPlaceForPawn(color, x, y, x + 1, y + 1, array))
+                        return true;
                     break;
                 
                 default:
                     Console.WriteLine("Wrong button!");
                     break;
             }
-            return array;
+            return false;
         }
     }
 }

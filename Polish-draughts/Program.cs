@@ -13,6 +13,7 @@ namespace Polish_draughts
             int turn = 0;
             string message = "\nWhite's turn\n";
             string color = "W";
+            bool nextMove;
             Console.Clear();
             Console.WriteLine(message);
             ShowBoard(array);
@@ -20,9 +21,9 @@ namespace Polish_draughts
             while (true)
             {
                 Pawn[,] previousMoveArray = (Pawn[,]) array.Clone();
-                makingMove.MakeMove(color, array);
+                nextMove = makingMove.MakeMove(color, array);
                 bool boardEqual = AreBoardsEqual(array, previousMoveArray);
-                if (!boardEqual)
+                if (!boardEqual & nextMove == false)
                     turn += 1;
                 message = (turn % 2 == 1) ? "Black's turn" : "White's turn";
                 color = (turn % 2 == 1) ? "B" : "W";
