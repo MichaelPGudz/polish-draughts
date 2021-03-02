@@ -94,7 +94,7 @@ namespace Polish_draughts
             Console.WriteLine(' ');
             for (int i = 0; i <= uBound0; i++) 
             {
-                if (i < uBound0)
+                if (i < 9) // number with one digit needs additional space to be right visual formatted in board
                 {
                     Console.Write(' ');
                 }
