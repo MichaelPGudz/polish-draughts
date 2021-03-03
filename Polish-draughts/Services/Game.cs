@@ -19,14 +19,16 @@ namespace Polish_draughts.Services
                 if (characters[i] == coordinates[0])
                 {
                     transformedCoordinates[0] = i;
+                    break;
                 }
             }
 
             for (var i = 1; i <= boardSize; i++)
             {
-                if (i == coordinates[1])
+                if (i == Int32.Parse(coordinates.Substring(1)))
                 {
-                    transformedCoordinates[1] = coordinates[1];
+                    transformedCoordinates[1] = i - 1;
+                    break;
                 }
             }
 
@@ -226,13 +228,11 @@ namespace Polish_draughts.Services
             while (true)
             {
                 var coordinates = Console.ReadLine();
-                // var transformedCoordinates = TransformCoordinates(10, coordinates);
-                // Console.WriteLine(transformedCoordinates);
                 try
                 {
-                    char[] coordinatesSplitted = coordinates.ToCharArray();
-                    x = Int32.Parse(coordinatesSplitted[0].ToString());
-                    y = Int32.Parse(coordinatesSplitted[1].ToString());
+                    var transformedCoordinates = TransformCoordinates(10, coordinates);
+                    x = transformedCoordinates[1];
+                    y = transformedCoordinates[0];
                     break;
                 }
                 catch
