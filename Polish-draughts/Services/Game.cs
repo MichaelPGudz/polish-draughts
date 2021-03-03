@@ -224,7 +224,7 @@ namespace Polish_draughts.Services
         {
             int x;
             int y;
-            Console.WriteLine("\nPlease provide coordinates of Pawn you want to move: eg. 13, or 41");
+            Console.WriteLine("\nPlease provide coordinates of Pawn you want to move: eg. A1, or H7");
             while (true)
             {
                 var coordinates = Console.ReadLine();

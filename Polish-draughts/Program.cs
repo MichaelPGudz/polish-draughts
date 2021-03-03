@@ -27,7 +27,7 @@ namespace Polish_draughts
                 bool boardEqual = AreBoardsEqual(array, previousMoveArray);
                 // changing turns only if proper move was done (there is difference between current and previous array
                 // and nextMove is not required - current player has no more pawns to beat
-                if (!boardEqual & nextMove == false)
+                if (!boardEqual && !nextMove)
                     turn += 1;
                 message = (turn % 2 == 1) ? "Black's turn" : "White's turn";
                 color = (turn % 2 == 1) ? "B" : "W";
@@ -39,12 +39,12 @@ namespace Polish_draughts
         private static int SetBoardSize()
         {
             int boardSize;
-            Console.WriteLine("\nEnter Board size: ");
-            var userInput = Console.ReadLine();
             while (true)
             {
                 try
                 {
+                    Console.WriteLine("\nEnter Board size: ");
+                    var userInput = Console.ReadLine();
                     boardSize = int.Parse(userInput);
                     break;
                 }
