@@ -230,7 +230,7 @@ namespace Polish_draughts.Services
                 var coordinates = Console.ReadLine();
                 try
                 {
-                    var transformedCoordinates = TransformCoordinates(10, coordinates);
+                    var transformedCoordinates = TransformCoordinates(array.GetUpperBound(0), coordinates);
                     x = transformedCoordinates[1];
                     y = transformedCoordinates[0];
                     break;
