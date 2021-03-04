@@ -283,7 +283,7 @@ namespace Polish_draughts.Services
         
         
         // checks board if amount of pawns of chosen color equals 0 -> then this color loses!
-        public Tuple<bool, string> IsWinnerByBeat(string color, Pawn[,] array)
+        public Tuple<bool, string> CheckForWinnerByBeat(string color, Pawn[,] array)
         {
             int pawns = 0;
 
@@ -308,7 +308,7 @@ namespace Polish_draughts.Services
         
         // checks for pawns of chosen color if there is space for all of them to move
         // if there is no space on next fields and on fields behind enemy's pawns for all of them -> this color loses!
-        public Tuple<bool, string> IsWinnerByBlock(string color, Pawn[,] array)
+        public Tuple<bool, string> CheckForWinnerByBlock(string color, Pawn[,] array)
         {
             for (int i = 0; i <= array.GetUpperBound(0); i++)
             {

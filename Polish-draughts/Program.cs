@@ -8,45 +8,54 @@ namespace Polish_draughts
     {
         static void Main(string[] args)
         {
-            Pawn[,] array = GetBoard();
-            var makingMove = new Game();
-            int turn = 0;
-            string message = "\nWhite's turn\n";
-            string color = "W";
-            bool nextMove;
-            Console.Clear();
-            Console.WriteLine(message);
-            ShowBoard(array);
-
-            while (true)
+            Round();
+        }
+        
+        // Defines all necessary actions in one round
+        private static void Round()
+        {
             {
-                Pawn[,] previousMoveArray = (Pawn[,]) array.Clone();
-                // making move gives also an information about next move -> is current player required to do next move
-                // or is it allowed to change turn for other player
-                nextMove = makingMove.MakeMove(color, array);
-                bool boardEqual = AreBoardsEqual(array, previousMoveArray);
-                // changing turns only if proper move was done (there is difference between current and previous array
-                // and nextMove is not required - current player has no more pawns to beat
-                if (!boardEqual && !nextMove)
-                    turn += 1;
-                message = (turn % 2 == 1) ? "Black's turn" : "White's turn";
-                color = (turn % 2 == 1) ? "B" : "W";
-                Console.WriteLine($"\n{message}\n");
+                Pawn[,] array = GetBoard();
+                var makingMove = new Game();
+                int turn = 0;
+                string message = "\nWhite's turn\n";
+                string color = "W";
+                bool nextMove;
+                Console.Clear();
+                Console.WriteLine(message);
                 ShowBoard(array);
-                var winnerByBeat= makingMove.IsWinnerByBeat(color, array);
-                if (winnerByBeat.Item1)
+
+                while (true)
                 {
-                    Console.WriteLine(winnerByBeat.Item2);
-                    break;
-                }
-                var winnerByBlock = makingMove.IsWinnerByBlock(color, array);
-                if (winnerByBlock.Item1)
-                {
-                    Console.WriteLine(winnerByBlock.Item2);
-                    break;
+                    Pawn[,] previousMoveArray = (Pawn[,]) array.Clone();
+                    // making move gives also an information about next move -> is current player required to do next move
+                    // or is it allowed to change turn for other player
+                    nextMove = makingMove.MakeMove(color, array);
+                    bool boardEqual = AreBoardsEqual(array, previousMoveArray);
+                    // changing turns only if proper move was done (there is difference between current and previous array)
+                    // and nextMove is not required - current player has no more pawns to beat
+                    if (!boardEqual && !nextMove)
+                        turn += 1;
+                    message = (turn % 2 == 1) ? "Black's turn" : "White's turn";
+                    color = (turn % 2 == 1) ? "B" : "W";
+                    Console.WriteLine($"\n{message}\n");
+                    ShowBoard(array);
+                    var winnerByBeat= makingMove.CheckForWinnerByBeat(color, array);
+                    if (winnerByBeat.Item1)
+                    {
+                        Console.WriteLine(winnerByBeat.Item2);
+                        break;
+                    }
+                    var winnerByBlock = makingMove.CheckForWinnerByBlock(color, array);
+                    if (winnerByBlock.Item1)
+                    {
+                        Console.WriteLine(winnerByBlock.Item2);
+                        break;
+                    }
                 }
             }
         }
+        
 
         private static int SetBoardSize()
         {
