@@ -33,6 +33,12 @@ namespace Polish_draughts
                 color = (turn % 2 == 1) ? "B" : "W";
                 Console.WriteLine($"\n{message}\n");
                 ShowBoard(array);
+                var isWinner= makingMove.IsWinnerByBeat(array);
+                if (isWinner.Item1)
+                {
+                    Console.WriteLine(isWinner.Item2);
+                    break;
+                }
             }
         }
 

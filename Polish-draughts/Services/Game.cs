@@ -230,7 +230,7 @@ namespace Polish_draughts.Services
                 var coordinates = Console.ReadLine();
                 try
                 {
-                    var transformedCoordinates = TransformCoordinates(array.GetUpperBound(0), coordinates);
+                    var transformedCoordinates = TransformCoordinates(array.GetUpperBound(0) + 1, coordinates);
                     x = transformedCoordinates[1];
                     y = transformedCoordinates[0];
                     break;
@@ -279,6 +279,36 @@ namespace Polish_draughts.Services
             }
             // returns false after move when there is no need of current's player next move
             return false;
+        }
+
+
+        public Tuple<bool, string> IsWinnerByBeat(Pawn[,] array)
+        {
+            int blackPawns = 0;
+            int whitePawns = 0;
+            
+            for (int i = 0; i <= array.GetUpperBound(0); i++)
+            {
+                for (int j = 0; j <= array.GetUpperBound(1); j++)
+                {
+                    if (array[i,j] != null)
+                    {
+                        if (array[i, j].Sign == "W")
+                            whitePawns += 1;
+                        if (array[i, j].Sign == "B")
+                            blackPawns += 1;
+                    }
+                }
+            }
+            if (whitePawns == 0)
+            {
+                return new Tuple<bool, string>(true, "Black has won!");
+            }
+            if (blackPawns == 0)
+            {
+                return new Tuple<bool, string>(true, "White has won!");
+            }
+            return new Tuple<bool, string>(false, String.Empty);
         }
     }
 }
