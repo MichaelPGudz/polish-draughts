@@ -280,35 +280,64 @@ namespace Polish_draughts.Services
             // returns false after move when there is no need of current's player next move
             return false;
         }
-
-
-        public Tuple<bool, string> IsWinnerByBeat(Pawn[,] array)
+        
+        
+        // checks board if amount of pawns of chosen color equals 0 -> then this color loses!
+        public Tuple<bool, string> IsWinnerByBeat(string color, Pawn[,] array)
         {
-            int blackPawns = 0;
-            int whitePawns = 0;
-            
+            int pawns = 0;
+
             for (int i = 0; i <= array.GetUpperBound(0); i++)
             {
                 for (int j = 0; j <= array.GetUpperBound(1); j++)
                 {
                     if (array[i,j] != null)
                     {
-                        if (array[i, j].Sign == "W")
-                            whitePawns += 1;
-                        if (array[i, j].Sign == "B")
-                            blackPawns += 1;
+                        if (array[i, j].Sign == color)
+                            pawns += 1;
                     }
                 }
             }
-            if (whitePawns == 0)
+            if (pawns == 0)
             {
-                return new Tuple<bool, string>(true, "Black has won!");
-            }
-            if (blackPawns == 0)
-            {
-                return new Tuple<bool, string>(true, "White has won!");
+                return new Tuple<bool, string>(true, $"{color} has LOST!");
             }
             return new Tuple<bool, string>(false, String.Empty);
+        }
+
+        
+        // checks for pawns of chosen color if there is space for all of them to move
+        // if there is no space on next fields and on fields behind enemy's pawns for all of them -> this color loses!
+        public Tuple<bool, string> IsWinnerByBlock(string color, Pawn[,] array)
+        {
+            for (int i = 0; i <= array.GetUpperBound(0); i++)
+            {
+                for (int j = 0; j <= array.GetUpperBound(1); j++)
+                {
+                    if (array[i, j] != null)
+                    {
+                        if (array[i, j].Sign == color)
+                        {
+                            if (IsNextFieldFree(i + 1, j + 1, array).Item1
+                                | IsNextFieldFree(i - 1, j - 1, array).Item1
+                                | IsNextFieldFree(i - 1, j + 1, array).Item1
+                                | IsNextFieldFree(i + 1, j - 1, array).Item1)
+                            {
+                                return new Tuple<bool, string>(false, String.Empty);
+                            }
+
+                            if (IsFieldBehindPawnFree(i, j, i + 1, j + 1, array).Item1
+                                | IsFieldBehindPawnFree(i, j, i - 1, j - 1, array).Item1
+                                | IsFieldBehindPawnFree(i, j, i - 1, j + 1, array).Item1
+                                | IsFieldBehindPawnFree(i, j, i + 1, j - 1, array).Item1)
+                            {
+                                return new Tuple<bool, string>(false, String.Empty);
+                            }
+                        }
+                    }
+                }
+            }
+            return new Tuple<bool, string>(true, $"{color} has LOST!");
         }
     }
 }
